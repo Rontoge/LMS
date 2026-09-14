@@ -1,0 +1,933 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Account Activation Required</title>
+
+    <style>
+
+        /* ================================
+           EMAIL RESET
+        ================================= */
+
+        html,
+        body {
+            margin: 0 !important;
+            padding: 0 !important;
+            width: 100% !important;
+            background-color: #050505;
+        }
+
+        body {
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            color: #ffffff;
+
+            -webkit-font-smoothing: antialiased;
+        }
+
+        table {
+            border-spacing: 0;
+            border-collapse: collapse;
+        }
+
+        img {
+            border: 0;
+            display: block;
+            max-width: 100%;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+
+        /* ================================
+           CODE ANIMATION
+        ================================= */
+
+        @keyframes codePulse {
+
+            0% {
+                transform: scale(1);
+                box-shadow:
+                    0 0 0 rgba(191, 255, 0, 0);
+            }
+
+            50% {
+                transform: scale(1.015);
+                box-shadow:
+                    0 0 25px rgba(191, 255, 0, 0.08);
+            }
+
+            100% {
+                transform: scale(1);
+                box-shadow:
+                    0 0 0 rgba(191, 255, 0, 0);
+            }
+
+        }
+
+
+        .activation-card {
+            animation:
+                codePulse 3s ease-in-out infinite;
+        }
+
+
+        /* ================================
+           MOBILE
+        ================================= */
+
+        @media only screen and (max-width: 600px) {
+
+            .email-wrapper {
+                padding: 10px !important;
+            }
+
+            .container {
+                width: 100% !important;
+                border-radius: 6px !important;
+            }
+
+            .content {
+                padding: 32px 20px !important;
+            }
+
+            .activation-code {
+                font-size: 36px !important;
+                letter-spacing: 7px !important;
+            }
+
+            .title {
+                font-size: 25px !important;
+            }
+
+            .status-left,
+            .status-right {
+                font-size: 8px !important;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     OUTER BACKGROUND
+====================================================== -->
+
+<table
+    width="100%"
+    cellpadding="0"
+    cellspacing="0"
+    border="0"
+    style="
+        width:100%;
+        background:#050505;
+    "
+>
+
+    <tr>
+
+        <td
+            align="center"
+            class="email-wrapper"
+            style="
+                padding:35px 15px;
+            "
+        >
+
+
+            <!-- =================================================
+                 MAIN CONTAINER
+            ================================================== -->
+
+            <table
+                class="container"
+                width="600"
+                cellpadding="0"
+                cellspacing="0"
+                border="0"
+                style="
+                    width:600px;
+                    max-width:600px;
+
+                    background:#0d0d0d;
+
+                    border:
+                        1px solid #272727;
+
+                    border-radius:8px;
+
+                    overflow:hidden;
+
+                    box-shadow:
+                        0 20px 60px
+                        rgba(0,0,0,0.65);
+                "
+            >
+
+
+                <!-- =================================================
+                     TOP STATUS BAR
+                ================================================== -->
+
+                <tr>
+
+                    <td
+                        style="
+                            padding:11px 18px;
+
+                            background:#080808;
+
+                            border-bottom:
+                                1px solid #242424;
+                        "
+                    >
+
+                        <table
+                            width="100%"
+                            cellpadding="0"
+                            cellspacing="0"
+                            border="0"
+                        >
+
+                            <tr>
+
+                                <!-- LEFT STATUS -->
+
+                                <td
+                                    class="status-left"
+                                    align="left"
+                                    style="
+                                        color:#bfff00;
+
+                                        font-family:
+                                            'Courier New',
+                                            monospace;
+
+                                        font-size:10px;
+
+                                        letter-spacing:2px;
+
+                                        font-weight:bold;
+                                    "
+                                >
+
+                                    ● SYSTEM ONLINE
+
+                                </td>
+
+
+                                <!-- RIGHT STATUS -->
+
+                                <td
+                                    class="status-right"
+                                    align="right"
+                                    style="
+                                        color:#666666;
+
+                                        font-family:
+                                            'Courier New',
+                                            monospace;
+
+                                        font-size:10px;
+
+                                        letter-spacing:1px;
+                                    "
+                                >
+
+                                    AUTH_PROTOCOL / 02
+
+                                </td>
+
+                            </tr>
+
+                        </table>
+
+                    </td>
+
+                </tr>
+
+
+
+                <!-- =================================================
+                     BRAND HEADER
+                ================================================== -->
+
+                <tr>
+
+                    <td
+                        align="center"
+                        style="
+                            padding:34px 25px 28px;
+
+                            background:
+                                linear-gradient(
+                                    180deg,
+                                    #121212 0%,
+                                    #0d0d0d 100%
+                                );
+                        "
+                    >
+
+                        <!-- BRAND -->
+
+                        <div
+                            style="
+                                color:#ffffff;
+
+                                font-size:22px;
+
+                                line-height:26px;
+
+                                font-weight:900;
+
+                                letter-spacing:4px;
+
+                                text-transform:uppercase;
+                            "
+                        >
+
+                            LEARNING PLATFORM<span style="color:#bfff00;">APP</span>
+
+                        </div>
+
+
+                        <!-- BRAND LINE -->
+
+                        <div
+                            style="
+                                width:42px;
+
+                                height:3px;
+
+                                margin:
+                                    14px auto 0;
+
+                                background:#bfff00;
+                            "
+                        ></div>
+
+                    </td>
+
+                </tr>
+
+
+
+                <!-- =================================================
+                     MAIN CONTENT
+                ================================================== -->
+
+                <tr>
+
+                    <td
+                        class="content"
+                        style="
+                            padding:
+                                40px
+                                45px
+                                45px;
+                        "
+                    >
+
+
+                        <!-- STATUS LABEL -->
+
+                        <table
+                            align="center"
+                            cellpadding="0"
+                            cellspacing="0"
+                            border="0"
+                        >
+
+                            <tr>
+
+                                <td
+                                    style="
+                                        padding:
+                                            7px
+                                            13px;
+
+                                        background:
+                                            rgba(
+                                                191,
+                                                255,
+                                                0,
+                                                0.06
+                                            );
+
+                                        border:
+                                            1px solid
+                                            rgba(
+                                                191,
+                                                255,
+                                                0,
+                                                0.25
+                                            );
+
+                                        color:#bfff00;
+
+                                        font-family:
+                                            'Courier New',
+                                            monospace;
+
+                                        font-size:10px;
+
+                                        font-weight:bold;
+
+                                        letter-spacing:2px;
+
+                                        text-transform:uppercase;
+                                    "
+                                >
+
+                                    ACCOUNT ACTIVATION
+
+                                </td>
+
+                            </tr>
+
+                        </table>
+
+
+                        <div style="height:22px;"></div>
+
+
+                        <!-- TITLE -->
+
+                        <h1
+                            class="title"
+                            style="
+                                margin:0;
+
+                                color:#ffffff;
+
+                                text-align:center;
+
+                                font-size:30px;
+
+                                line-height:38px;
+
+                                font-weight:900;
+
+                                letter-spacing:-0.5px;
+                            "
+                        >
+
+                            Secure your account.
+
+                        </h1>
+
+
+                        <div style="height:14px;"></div>
+
+
+                        <!-- DESCRIPTION -->
+
+                        <p
+                            style="
+                                max-width:450px;
+
+                                margin:
+                                    0 auto;
+
+                                color:#858585;
+
+                                text-align:center;
+
+                                font-size:14px;
+
+                                line-height:23px;
+                            "
+                        >
+
+                            Welcome,
+                            <strong
+                                style="
+                                    color:#ffffff;
+                                "
+                            >
+                                <%= user.name %>
+                            </strong>.
+
+                            <br>
+
+                            We've received a request to activate
+                            your account. Enter the verification
+                            code below to continue.
+
+                        </p>
+
+
+                        <div style="height:35px;"></div>
+
+
+
+                        <!-- =================================================
+                             ACTIVATION CODE
+                        ================================================== -->
+
+                        <table
+                            width="100%"
+                            cellpadding="0"
+                            cellspacing="0"
+                            border="0"
+                            class="activation-card"
+                            style="
+                                width:100%;
+
+                                background:
+                                    linear-gradient(
+                                        145deg,
+                                        #111111,
+                                        #0a0a0a
+                                    );
+
+                                border:
+                                    1px solid
+                                    rgba(
+                                        191,
+                                        255,
+                                        0,
+                                        0.28
+                                    );
+
+                                border-radius:6px;
+                            "
+                        >
+
+                            <tr>
+
+                                <td
+                                    align="center"
+                                    style="
+                                        padding:
+                                            32px
+                                            20px;
+                                    "
+                                >
+
+
+                                    <!-- LABEL -->
+
+                                    <p
+                                        style="
+                                            margin:
+                                                0 0 16px;
+
+                                            color:#c99f38;
+
+                                            font-family:
+                                                'Courier New',
+                                                monospace;
+
+                                            font-size:10px;
+
+                                            font-weight:bold;
+
+                                            letter-spacing:3px;
+
+                                            text-transform:uppercase;
+                                        "
+                                    >
+
+                                        VERIFICATION CODE
+
+                                    </p>
+
+
+                                    <!-- CODE -->
+
+                                    <div
+                                        class="activation-code"
+                                        style="
+                                            color:#ffffff;
+
+                                            font-family:
+                                                'Courier New',
+                                                monospace;
+
+                                            font-size:46px;
+
+                                            line-height:54px;
+
+                                            font-weight:900;
+
+                                            letter-spacing:9px;
+
+                                            text-shadow:
+                                                0 0 18px
+                                                rgba(
+                                                    191,
+                                                    255,
+                                                    0,
+                                                    0.30
+                                                );
+                                        "
+                                    >
+
+                                        <%= activationCode %>
+
+                                    </div>
+
+
+                                    <!-- EXPIRY -->
+
+                                    <p
+                                        style="
+                                            margin:
+                                                16px 0 0;
+
+                                            color:#666666;
+
+                                            font-family:
+                                                'Courier New',
+                                                monospace;
+
+                                            font-size:10px;
+
+                                            letter-spacing:1px;
+                                        "
+                                    >
+
+                                        CODE VALID FOR
+                                        <span
+                                            style="
+                                                color:#bfff00;
+                                            "
+                                        >
+                                            05:00
+                                        </span>
+
+                                    </p>
+
+                                </td>
+
+                            </tr>
+
+                        </table>
+
+
+
+                        <div style="height:30px;"></div>
+
+
+
+                        <!-- =================================================
+                             SECURITY INFORMATION
+                        ================================================== -->
+
+                        <table
+                            width="100%"
+                            cellpadding="0"
+                            cellspacing="0"
+                            border="0"
+                            style="
+                                background:#090909;
+
+                                border:
+                                    1px solid #242424;
+
+                                border-radius:4px;
+                            "
+                        >
+
+                            <tr>
+
+                                <td
+                                    style="
+                                        padding:17px 18px;
+                                    "
+                                >
+
+                                    <table
+                                        width="100%"
+                                        cellpadding="0"
+                                        cellspacing="0"
+                                        border="0"
+                                    >
+
+                                        <tr>
+
+                                            <!-- ICON -->
+
+                                            <td
+                                                width="34"
+                                                valign="top"
+                                                style="
+                                                    color:#bfff00;
+
+                                                    font-size:18px;
+                                                "
+                                            >
+
+                                                ✓
+
+                                            </td>
+
+
+                                            <!-- MESSAGE -->
+
+                                            <td
+                                                valign="top"
+                                            >
+
+                                                <p
+                                                    style="
+                                                        margin:
+                                                            0 0 4px;
+
+                                                        color:#ffffff;
+
+                                                        font-size:12px;
+
+                                                        font-weight:bold;
+
+                                                        letter-spacing:0.5px;
+                                                    "
+                                                >
+
+                                                    SECURITY CHECK
+
+                                                </p>
+
+
+                                                <p
+                                                    style="
+                                                        margin:0;
+
+                                                        color:#666666;
+
+                                                        font-size:11px;
+
+                                                        line-height:18px;
+                                                    "
+                                                >
+
+                                                    This verification code
+                                                    is temporary and should
+                                                    never be shared with
+                                                    another person.
+
+                                                </p>
+
+                                            </td>
+
+                                        </tr>
+
+                                    </table>
+
+                                </td>
+
+                            </tr>
+
+                        </table>
+
+
+
+                        <div style="height:28px;"></div>
+
+
+
+                        <!-- =================================================
+                             EXPIRY NOTICE
+                        ================================================== -->
+
+                        <table
+                            width="100%"
+                            cellpadding="0"
+                            cellspacing="0"
+                            border="0"
+                        >
+
+                            <tr>
+
+                                <td
+                                    align="center"
+                                    style="
+                                        color:#555555;
+
+                                        font-size:11px;
+
+                                        line-height:18px;
+                                    "
+                                >
+
+                                    Your activation code will expire
+                                    automatically after
+
+                                    <strong
+                                        style="
+                                            color:#888888;
+                                        "
+                                    >
+                                        5 minutes
+                                    </strong>.
+
+                                </td>
+
+                            </tr>
+
+                        </table>
+
+
+                        <div style="height:12px;"></div>
+
+
+                        <!-- WRONG REQUEST -->
+
+                        <p
+                            style="
+                                margin:0;
+
+                                text-align:center;
+
+                                color:#444444;
+
+                                font-size:10px;
+
+                                line-height:17px;
+                            "
+                        >
+
+                            If you did not create this account,
+                            you can safely ignore this message.
+
+                        </p>
+
+
+                    </td>
+
+                </tr>
+
+
+
+                <!-- =================================================
+                     FOOTER
+                ================================================== -->
+
+                <tr>
+
+                    <td
+                        align="center"
+                        style="
+                            padding:
+                                24px
+                                20px;
+
+                            background:#080808;
+
+                            border-top:
+                                1px solid #242424;
+                        "
+                    >
+
+                        <!-- SECURITY STATUS -->
+
+                        <p
+                            style="
+                                margin:
+                                    0 0 9px;
+
+                                color:#bfff00;
+
+                                font-family:
+                                    'Courier New',
+                                    monospace;
+
+                                font-size:9px;
+
+                                font-weight:bold;
+
+                                letter-spacing:2px;
+                            "
+                        >
+
+                            ● SECURE SESSION
+
+                        </p>
+
+
+                        <!-- COPYRIGHT -->
+
+                        <p
+                            style="
+                                margin:0;
+
+                                color:#3f3f3f;
+
+                                font-size:10px;
+
+                                line-height:17px;
+                            "
+                        >
+
+                            © <%= new Date().getFullYear() %>
+                            YOURAPP
+
+                            <br>
+
+                            Automated account security message.
+
+                        </p>
+
+                    </td>
+
+                </tr>
+
+            </table>
+
+
+
+            <!-- =================================================
+                 EMAIL FOOTNOTE
+            ================================================== -->
+
+            <p
+                style="
+                    max-width:520px;
+
+                    margin:
+                        18px auto 0;
+
+                    color:#303030;
+
+                    text-align:center;
+
+                    font-size:9px;
+
+                    line-height:15px;
+                "
+            >
+
+                This email was generated automatically.
+                Please do not reply to this message.
+
+            </p>
+
+
+        </td>
+
+    </tr>
+
+</table>
+
+</body>
+
+</html>
+```
