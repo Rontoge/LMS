@@ -8,6 +8,7 @@ import ejs from "ejs";
 import path from "path";
 import sendMail from "../utils/sendmail";
 import { sendToken } from "../utils/jwt";
+import { redis } from "../utils/redis";
 
 // register user
 interface IRegistrationBody {
@@ -132,8 +133,7 @@ export const activateUser = catchAsyncErrors(
   },
 );
 
-
-// login user 
+// login user
 interface ILoginRequest {
   email: string;
   password: string;
@@ -144,8 +144,10 @@ export const loginUser = catchAsyncErrors(
     try {
       const { email, password } = req.body as ILoginRequest;
 
-      if(!email || !password) {
-        return next(new ErrorHandler("Please enter both email and password", 400));
+      if (!email || !password) {
+        return next(
+          new ErrorHandler("Please enter both email and password", 400),
+        );
       }
 
       const user = await userModel.findOne({ email }).select("+password");
@@ -160,24 +162,28 @@ export const loginUser = catchAsyncErrors(
         return next(new ErrorHandler("Invalid email or password", 400));
       }
 
-      sendToken(user, 200 ,res);
-
+      sendToken(user, 200, res);
     } catch (err: any) {
       return next(new ErrorHandler(err.message, 400));
     }
-  }
+  },
 );
 
-export const logoutUser = catchAsyncErrors(async(req: Request, res: Response, next: NextFunction) => {
-  try{
-    res.cookie('access_token', '', {maxAge : 1});
-    res.cookie('refresh_token', '', {maxAge : 1});
-    res.status(200).json({
-      success: true,
-      message: "Logged out successfully"
-    })
+export const logoutUser = catchAsyncErrors(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      res.cookie("access_token", "", { maxAge: 1 });
+      res.cookie("refresh_token", "", { maxAge: 1 });
 
-  }catch(err: any){
-    return next(new ErrorHandler(err.message, 400));
-  }
-});
+      const userId = req.user?._id?.toString() || "";
+      redis.del(userId);
+
+      res.status(200).json({
+        success: true,
+        message: "Logged out successfully",
+      });
+    } catch (err: any) {
+      return next(new ErrorHandler(err.message, 400));
+    }
+  },
+);
