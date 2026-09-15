@@ -9,6 +9,7 @@ import path from "path";
 import sendMail from "../utils/sendmail";
 import { refreshTokenOptions, sendToken ,accessTokenOptions} from "../utils/jwt";
 import { redis } from "../utils/redis";
+import { getUserById } from "../services/user.service";
 
 // register user
 interface IRegistrationBody {
@@ -199,8 +200,7 @@ export const updateAccessToken = catchAsyncErrors(
         process.env.REFRESH_TOKEN as string,
       ) as JwtPayload;
 
-      const message =
-        "could not update access token. Please login to access this resource";
+      const message ="could not update access token. Please login to access this resource";
       if (!decoded) {
         return next(new ErrorHandler(message, 400));
       }
@@ -227,9 +227,25 @@ export const updateAccessToken = catchAsyncErrors(
 
       res.cookie("access_token", accessToken,accessTokenOptions );
       res.cookie("refresh_token", refreshToken,refreshTokenOptions);
+
+      res.status(200).json({
+        success: true,
+        accessToken,
+      });
       
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 400));
     }
   },
 );
+
+
+export const getUserInfo = catchAsyncErrors(async (req: Request, res: Response, next: NextFunction) => {
+  try{
+      const userId = req.user?._id?.toString();;
+      getUserById(userId, res);
+  }catch(error:  any){
+          return next(new ErrorHandler(error.message, 400));
+
+  }
+})
