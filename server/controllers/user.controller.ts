@@ -3,11 +3,11 @@ import { Request, Response, NextFunction } from "express";
 import userModel, { IUser } from "../models/user.model";
 import ErrorHandler from "../utils/ErrorHandler";
 import { catchAsyncErrors } from "../middleware/catchAsyncErrors";
-import jwt, { Secret } from "jsonwebtoken";
+import jwt, { JwtPayload, Secret } from "jsonwebtoken";
 import ejs from "ejs";
 import path from "path";
 import sendMail from "../utils/sendmail";
-import { sendToken } from "../utils/jwt";
+import { refreshTokenOptions, sendToken ,accessTokenOptions} from "../utils/jwt";
 import { redis } from "../utils/redis";
 
 // register user
@@ -184,6 +184,52 @@ export const logoutUser = catchAsyncErrors(
       });
     } catch (err: any) {
       return next(new ErrorHandler(err.message, 400));
+    }
+  },
+);
+
+// update acccess token
+export const updateAccessToken = catchAsyncErrors(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const refresh_token = req.cookies.refresh_token as string;
+
+      const decoded = jwt.verify(
+        refresh_token,
+        process.env.REFRESH_TOKEN as string,
+      ) as JwtPayload;
+
+      const message =
+        "could not update access token. Please login to access this resource";
+      if (!decoded) {
+        return next(new ErrorHandler(message, 400));
+      }
+
+      const session = await redis.get(decoded.id as string);
+
+      if (!session) {
+        return next(new ErrorHandler(message, 400));
+      }
+
+      const user = JSON.parse(session);
+
+      const accessToken = jwt.sign(
+        { id: user._id },
+        process.env.ACCESS_TOKEN as string,
+        { expiresIn: "5m" },
+      );
+
+      const refreshToken = jwt.sign(
+        { id: user._id },
+        process.env.REFRESH_TOKEN as string,
+        { expiresIn: "3d" },
+      );
+
+      res.cookie("access_token", accessToken,accessTokenOptions );
+      res.cookie("refresh_token", refreshToken,refreshTokenOptions);
+      
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 400));
     }
   },
 );
