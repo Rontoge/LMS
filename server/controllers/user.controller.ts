@@ -7,7 +7,11 @@ import jwt, { JwtPayload, Secret } from "jsonwebtoken";
 import ejs from "ejs";
 import path from "path";
 import sendMail from "../utils/sendmail";
-import { refreshTokenOptions, sendToken ,accessTokenOptions} from "../utils/jwt";
+import {
+  refreshTokenOptions,
+  sendToken,
+  accessTokenOptions,
+} from "../utils/jwt";
 import { redis } from "../utils/redis";
 import { getUserById } from "../services/user.service";
 
@@ -94,20 +98,20 @@ export const createActivationToken = (user: any): IActivationToken => {
 
 interface IActivationRequest {
   activation_token: string;
-  activatio_code: string;
+  activation_code: string;
 }
 
 export const activateUser = catchAsyncErrors(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { activation_token, activatio_code } =
+      const { activation_token, activation_code } =
         req.body as IActivationRequest;
       const newUser: { user: IUser; activationCode: string } = jwt.verify(
         activation_token,
         process.env.ACTIVATION_SECRET as string,
       ) as { user: IUser; activationCode: string };
 
-      if (newUser.activationCode !== activatio_code) {
+      if (newUser.activationCode !== activation_code) {
         return next(new ErrorHandler("Invalid activation code", 400));
       }
 
@@ -200,7 +204,8 @@ export const updateAccessToken = catchAsyncErrors(
         process.env.REFRESH_TOKEN as string,
       ) as JwtPayload;
 
-      const message ="could not update access token. Please login to access this resource";
+      const message =
+        "could not update access token. Please login to access this resource";
       if (!decoded) {
         return next(new ErrorHandler(message, 400));
       }
@@ -225,27 +230,57 @@ export const updateAccessToken = catchAsyncErrors(
         { expiresIn: "3d" },
       );
 
-      res.cookie("access_token", accessToken,accessTokenOptions );
-      res.cookie("refresh_token", refreshToken,refreshTokenOptions);
+      res.cookie("access_token", accessToken, accessTokenOptions);
+      res.cookie("refresh_token", refreshToken, refreshTokenOptions);
 
       res.status(200).json({
         success: true,
         accessToken,
       });
-      
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 400));
     }
   },
 );
 
-
-export const getUserInfo = catchAsyncErrors(async (req: Request, res: Response, next: NextFunction) => {
-  try{
-      const userId = req.user?._id?.toString();;
+export const getUserInfo = catchAsyncErrors(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userId = req.user?._id?.toString();
       getUserById(userId, res);
-  }catch(error:  any){
-          return next(new ErrorHandler(error.message, 400));
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  },
+);
 
-  }
-})
+interface ISocialAuthBody {
+  name: string;
+  email: string;
+  avatar: string;
+}
+
+//  social auth
+export const socialAuth = catchAsyncErrors(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { name, email, avatar } = req.body as ISocialAuthBody;
+      const user = await userModel.findOne({ email });
+
+      if (!user) {
+        const newUser = await userModel.create({
+          name,
+          email,
+          avatar: {
+            url: avatar,
+          },
+        });
+        sendToken(newUser, 200, res);
+      } else {
+        sendToken(user, 200, res);
+      }
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  },
+);
