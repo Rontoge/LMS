@@ -24,7 +24,7 @@ export const uploadCourse = catchAsyncErrors(async (req:Request , res: Response 
                 url:myCloud.secure_url
             }
         }
-        createCourse(data , res,next)
+        await createCourse(data , res,next)
     } catch (error :any) {
         return next(new ErrorHandler(error.message,500))
         
