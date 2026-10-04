@@ -34,8 +34,6 @@ export const uploadCourse = catchAsyncErrors(async (req:Request , res: Response 
 
 
 //  edit course
-// 
-
 
 export const editCourse = catchAsyncErrors(
     async (req: Request, res: Response, next: NextFunction) => {
