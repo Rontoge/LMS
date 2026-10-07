@@ -103,10 +103,7 @@ export const getSingleCourse = catchAsyncErrors(
           "-courseData.videoUrl  -courseData.suggestion -courseData.questions -courseData.links",
         );
 
-        await redis.set(
-          `course:${courseId}`,
-          JSON.stringify(course)
-        );
+        await redis.set(`course:${courseId}`, JSON.stringify(course));
         res.status(200).json({
           success: true,
           course,
@@ -135,7 +132,7 @@ export const getAllCourses = catchAsyncErrors(
           "-courseData.videoUrl  -courseData.suggestion -courseData.questions -courseData.links",
         );
 
-        await redis.set("allCourses", JSON.stringify(courses)); 
+        await redis.set("allCourses", JSON.stringify(courses));
 
         res.status(200).json({
           success: true,
@@ -147,3 +144,42 @@ export const getAllCourses = catchAsyncErrors(
     }
   },
 );
+
+// get course content forn  valid user
+
+export const getCourseByUser = catchAsyncErrors(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const userCourseList = req.user?.courses;
+      const courseId = req.params.id;
+
+      console.log("USER COURSES:", userCourseList);
+      console.log("PARAM COURSE ID:", courseId);
+
+      const courseExists = userCourseList?.some(
+        (course: any) => course._id.toString() === courseId,
+      );
+      console.log("COURSE EXISTS:", courseExists);
+
+      if (!courseExists) {
+        return next(
+          new ErrorHandler("You have not purchased this course", 403),
+        );
+      }
+
+      const course = await CourseModel.findById(courseId);
+
+      const content = course?.courseData;
+
+      res.status(200).json({
+        success: true,
+        content,
+      });
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  },
+);
+
+
+// add questions in course
