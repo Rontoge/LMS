@@ -5,6 +5,7 @@ import cloudinary from "cloudinary";
 import { createCourse } from "../services/course.service";
 import CourseModel from "../models/course.model";
 import { redis } from "../utils/redis";
+import mongoose from "mongoose";
 
 // upload Course
 
@@ -183,3 +184,45 @@ export const getCourseByUser = catchAsyncErrors(
 
 
 // add questions in course
+interface IAddQuestion {
+  question: string;
+  courseId: string;
+  contentId: string;
+}
+
+export const addQuestion = catchAsyncErrors(async(req:Request, res: Response , next:NextFunction)=>{
+  try{
+    const { question, courseId, contentId }: IAddQuestion = req.body;
+    const course = await CourseModel.findById(courseId);
+
+    if(!mongoose.Types.ObjectId.isValid(contentId)){
+      return next(new ErrorHandler("Invalid content ID", 400));
+    }
+
+    const courseContent = course?.courseData.find((item:any) => item._id.equals(contentId));
+    if(!courseContent){
+      return next(new ErrorHandler("Content not found", 400));
+    }
+    const newQuestion: any = {
+      question,
+      user: req.user,
+      questionReplies: [],
+      createdAt: new Date(),
+    };
+
+
+    // add the new question to the course content's questions array
+    courseContent.questions.push(newQuestion);
+
+    await course?.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Question added successfully",
+      question: newQuestion,
+    });
+
+  }catch(error:any){
+    return next(new ErrorHandler(error.message, 500));
+  }
+});
