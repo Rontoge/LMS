@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Reply Notification</title>
+  <style>
+    /* Email-safe styling with a glassmorphism-inspired look and solid fallbacks. */
+    body {
+      margin: 0;
+      padding: 0;
+      background: #0b1020;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      color: #eef2ff;
+      -webkit-font-smoothing: antialiased;
+    }
+    table { border-collapse: collapse; border-spacing: 0; }
+    a { text-decoration: none; }
+    .page {
+      width: 100%;
+      background-color: #0b1020;
+      background-image:
+        radial-gradient(ellipse at top left, rgba(99,102,241,.22), transparent 48%),
+        radial-gradient(ellipse at bottom right, rgba(14,165,233,.15), transparent 42%);
+      padding: 44px 14px;
+    }
+    .card {
+      width: 100%;
+      max-width: 560px;
+      background: #151d31;
+      background: rgba(21, 29, 49, .94);
+      border: 1px solid #34405a;
+      border: 1px solid rgba(148,163,184,.22);
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: 0 22px 60px rgba(0,0,0,.28);
+    }
+    .accent {
+      height: 4px;
+      line-height: 4px;
+      font-size: 4px;
+      background: #818cf8;
+      background-image: linear-gradient(90deg, #6366f1, #8b5cf6, #38bdf8);
+    }
+    .brand {
+      color: #a5b4fc;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2.6px;
+      text-transform: uppercase;
+    }
+    .icon-box {
+      width: 58px;
+      height: 58px;
+      line-height: 58px;
+      border-radius: 17px;
+      text-align: center;
+      font-size: 27px;
+      color: #c7d2fe;
+      background: #29345a;
+      background: rgba(99,102,241,.16);
+      border: 1px solid rgba(129,140,248,.3);
+    }
+    .heading {
+      margin: 24px 0 12px;
+      color: #f8fafc;
+      font-size: 29px;
+      line-height: 1.28;
+      font-weight: 750;
+      letter-spacing: -.7px;
+    }
+    .copy {
+      margin: 0;
+      color: #b8c4d8;
+      font-size: 15px;
+      line-height: 1.8;
+    }
+    .details {
+      background: #1c2940;
+      background: rgba(148,163,184,.07);
+      border: 1px solid #34415b;
+      border: 1px solid rgba(148,163,184,.18);
+      border-radius: 15px;
+    }
+    .eyebrow {
+      color: #94a3b8;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+    .discussion-title {
+      color: #f1f5f9;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.65;
+      overflow-wrap: anywhere;
+    }
+    .button {
+      display: block;
+      padding: 15px 20px;
+      color: #ffffff !important;
+      background: #6366f1;
+      background-image: linear-gradient(100deg, #6366f1, #8b5cf6);
+      border-radius: 11px;
+      font-size: 14px;
+      line-height: 1.5;
+      font-weight: 700;
+      text-align: center;
+    }
+    .rule {
+      height: 1px;
+      line-height: 1px;
+      font-size: 1px;
+      background: #303b52;
+    }
+    .muted {
+      color: #8491a8;
+      font-size: 12px;
+      line-height: 1.8;
+    }
+    @media screen and (max-width: 600px) {
+      .page { padding: 22px 10px !important; }
+      .inner { padding-left: 22px !important; padding-right: 22px !important; }
+      .heading { font-size: 25px !important; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Inbox preview text -->
+  <div style="display:none!important;visibility:hidden;opacity:0;color:transparent;height:0;width:0;overflow:hidden;mso-hide:all;">
+    There's a new reply to your question. Open the discussion to continue.
+  </div>
+
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="page">
+    <tr>
+      <td align="center">
+        <table role="presentation" width="560" cellpadding="0" cellspacing="0" border="0" class="card" style="width:100%;max-width:560px;">
+          <tr><td class="accent">&nbsp;</td></tr>
+
+          <tr>
+            <td class="inner" style="padding:30px 38px 8px;">
+              <div class="brand">YOUR LEARNING SPACE</div>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="inner" style="padding:22px 38px 0;">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                <tr><td class="icon-box" align="center" valign="middle">&#9993;</td></tr>
+              </table>
+
+              <h1 class="heading">Hello <%= name %>,<br>there's a new reply.</h1>
+
+              <p class="copy" style="margin:0 0 24px;">
+                Someone has responded to your question. Take a moment to read their reply and keep the conversation going.
+              </p>
+
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="details">
+                <tr>
+                  <td style="padding:20px 22px;">
+                    <div class="eyebrow">Discussion update</div>
+                    <div class="discussion-title" style="margin-top:10px;"><%= title %></div>
+                    <div style="margin-top:14px;color:#a5b4fc;font-size:12px;font-weight:600;">
+                      A new response is waiting for you &nbsp;&#8594;
+                    </div>
+                  </td>
+                </tr>
+              </table>
+
+              <% if (typeof replyUrl !== 'undefined' && replyUrl) { %>
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:25px;">
+                <tr>
+                  <td align="center" bgcolor="#6366f1" style="border-radius:11px;">
+                    <a class="button" href="<%= replyUrl %>" target="_blank">
+                      View Reply &amp; Continue Discussion &nbsp;&#8594;
+                    </a>
+                  </td>
+                </tr>
+              </table>
+              <% } %>
+
+              <p class="copy" style="margin:22px 0 0;font-size:13px;text-align:center;">
+                Keep learning, keep asking, and keep growing.
+              </p>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="inner" style="padding:30px 38px 0;">
+              <div class="rule">&nbsp;</div>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="inner" align="center" style="padding:22px 38px 30px;">
+              <p style="margin:0 0 8px;color:#dbe4f3;font-size:13px;font-weight:600;">Your Learning Space</p>
+              <p class="muted" style="margin:0;">
+                This is an automated notification to let you know someone has replied to your question.
+              </p>
+              <p class="muted" style="margin:14px 0 0;">
+                Made for curious minds.<br>
+                &copy; <%= new Date().getFullYear() %> Your Learning Space. All rights reserved.
+              </p>
+            </td>
+          </tr>
+        </table>
+
+        <p style="margin:18px 0 0;color:#64748b;font-size:11px;line-height:1.7;text-align:center;">
+          You're receiving this email because you're part of our learning community.
+        </p>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
