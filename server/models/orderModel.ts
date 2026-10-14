@@ -1,7 +1,5 @@
 import mongoose, { Schema,Model, Document } from "mongoose";
 
-
-
 export interface IOrder extends Document {
     userId: string;
     courseId: string;
@@ -22,3 +20,7 @@ const orderSchema = new Schema<IOrder>({
         // required: true,
     }
 },{timestamps: true});
+
+
+const OrderModel: Model<IOrder> = mongoose.model<IOrder>("Order", orderSchema);
+export default OrderModel;
