@@ -13,9 +13,12 @@ import { newOrder } from "../services/order.service";
 export const createOrder = catchAsyncErrors(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { courseId, userId, payment_Info } = req.body as IOrder;
+      const { courseId, payment_Info } = req.body as IOrder;
 
       const user = await UserModel.findById(req.user?._id);
+      if (!user) {
+        return next(new ErrorHandler("User not found", 404));
+      }
 
       const courseExits = user?.courses.some(
         (course: any) => course._id.toString() === courseId.toString(),
@@ -33,11 +36,10 @@ export const createOrder = catchAsyncErrors(
       }
 
       const data: any = {
-        courseId: course?._id,
-        userId: user?._id,
+        courseId: course?._id.toString(),
+        userId: user?._id.toString(),
+        payment_Info,
       };
-
-      newOrder(data, res, next);
 
       const mailData = {
         order: {
@@ -57,20 +59,29 @@ export const createOrder = catchAsyncErrors(
         { order: mailData },
       );
 
-      try{
-        if(user){
-            await sendmail({
-                email: user.email,
-                subject: "Order Confirmation",
-                template: "order-confirmation.ejs",
-                data: mailData,
-
-            });
+      try {
+        if (user) {
+          await sendmail({
+            email: user.email,
+            subject: "Order Confirmation",
+            template: "order-confirmation.ejs",
+            data: mailData,
+          });
         }
-      }catch(error:any){
+      } catch (error: any) {
         return next(new ErrorHandler(error.message, 500));
       }
 
+      user.courses.push({ courseId: course._id.toString() });
+      await user.save();
+
+      await NotificationModel.create({
+        userId: user?._id.toString(),
+        title: "New-Order",
+        message: `you have a new order from ${course?.name}`,
+      });
+
+      newOrder(data, res, next);
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 500));
     }

@@ -1,13 +1,13 @@
 import mongoose, { Schema,Model, Document } from "mongoose";
 
-export interface IOrder extends Document {
+export interface INotification extends Document {
     title: string;
     message: string;
     status: string;
     userId: string;
 }
 
-const  notificationSchema = new Schema<IOrder>({
+const  notificationSchema = new Schema<INotification>({
     title: {
         type: String,
         required: true,
@@ -23,5 +23,5 @@ const  notificationSchema = new Schema<IOrder>({
     }
 },{timestamps: true});
 
-const NotificationModel: Model<IOrder> = mongoose.model<IOrder>("Notification", notificationSchema);
+const NotificationModel: Model<INotification> = mongoose.model("Notification", notificationSchema);
 export default NotificationModel;
