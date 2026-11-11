@@ -29,11 +29,7 @@ export const isAuthenticated = catchAsyncErrors(
     if (!user) {
       return next(new ErrorHandler("user not found", 400));
     }
-    console.log("REDIS USER:", user);
     req.user = JSON.parse(user);
-
-    console.log("REQ.USER:", req.user);
-    console.log("REQ.USER.COURSES:", req.user.courses);
 
     next();
   },

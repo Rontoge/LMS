@@ -1,14 +1,15 @@
-import notificationModel from "../models/notificationModel";
 import { NextFunction, Request, Response } from "express";
 import { catchAsyncErrors } from "../middleware/catchAsyncErrors";
 import ErrorHandler from "../utils/ErrorHandler";
+import cron from "node-cron";
+import NotificationModel from "../models/notificationModel";
 
 // get all notifications for admin
 
 export const getNotifications = catchAsyncErrors(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const notifications = await notificationModel
+      const notifications = await NotificationModel
         .find()
         .sort({ createdAt: -1 });
       res.status(201).json({
@@ -26,7 +27,7 @@ export const getNotifications = catchAsyncErrors(
 export const updatenoficationStatus = catchAsyncErrors(
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const notification = await notificationModel.findById(req.params.id);
+      const notification = await NotificationModel.findById(req.params.id);
       if (!notification) {
         return next(new ErrorHandler("Notification not found", 404));
       } else {
@@ -37,7 +38,7 @@ export const updatenoficationStatus = catchAsyncErrors(
 
       await notification.save();
 
-      const notifications = await notificationModel
+      const notifications = await NotificationModel
         .find()
         .sort({ createdAt: -1 });
 
@@ -51,3 +52,10 @@ export const updatenoficationStatus = catchAsyncErrors(
     }
   },
 );
+
+// delete a notification--- admin
+cron.schedule("0 0 0 * * *", async () => {
+  const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000); // Calculate the date 30 days ago
+  await NotificationModel.deleteMany({status: "read", createdAt: { $lt: thirtyDaysAgo } }); // Delete notifications older than 30 days
+  console.log("Deleted read notifications older than 30 days");
+})
