@@ -13,7 +13,7 @@ import {
   accessTokenOptions,
 } from "../utils/jwt";
 import { redis } from "../utils/redis";
-import { getUserById } from "../services/user.service";
+import { getAllUsersService, getUserById } from "../services/user.service";
 import cloudinary from "cloudinary";
 
 // register user
@@ -422,3 +422,14 @@ export const updateUserAvatar = catchAsyncErrors(
     }
   },
 );
+
+// get all users for admin
+
+export const getAllUsers = catchAsyncErrors(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      await getAllUsersService(res);
+    } catch (error: any) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  })

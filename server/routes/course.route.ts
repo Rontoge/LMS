@@ -9,6 +9,7 @@ import {
   getSingleCourse,
   uploadCourse,
   addReplyToReview,
+  getAllCourse,
 } from "../controllers/course.controller";
 import { isAuthenticated, authorizeRoles } from "../middleware/auth";
 
@@ -45,6 +46,13 @@ courseRouter.put(
   isAuthenticated,
   authorizeRoles("admin"),
   addReplyToReview,
+);
+
+courseRouter.get(
+  "/get-courses",
+  isAuthenticated,
+  authorizeRoles("admin"),
+  getAllCourse,
 );
 
 export default courseRouter;
