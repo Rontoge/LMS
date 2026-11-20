@@ -10,6 +10,7 @@ import {
   uploadCourse,
   addReplyToReview,
   getAllCourse,
+  deleteCourse
 } from "../controllers/course.controller";
 import { isAuthenticated, authorizeRoles } from "../middleware/auth";
 
@@ -53,6 +54,12 @@ courseRouter.get(
   isAuthenticated,
   authorizeRoles("admin"),
   getAllCourse,
+);
+courseRouter.delete(
+  "/delete-course/:id",
+  isAuthenticated,
+  authorizeRoles("admin"),
+  deleteCourse,
 );
 
 export default courseRouter;

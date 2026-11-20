@@ -13,7 +13,7 @@ import {
   accessTokenOptions,
 } from "../utils/jwt";
 import { redis } from "../utils/redis";
-import { getAllUsersService, getUserById } from "../services/user.service";
+import { getAllUsersService, getUserById, updateUserRoleService } from "../services/user.service";
 import cloudinary from "cloudinary";
 
 // register user
@@ -431,5 +431,42 @@ export const getAllUsers = catchAsyncErrors(
       await getAllUsersService(res);
     } catch (error: any) {
       return next(new ErrorHandler(error.message, 400));
+    }
+  });
+
+  // update user role for admin
+
+  export const updateUserRole = catchAsyncErrors(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try{
+      const{id,role}= req.body
+      updateUserRoleService(id,role,res)
+    }catch (error: any) {
+      return next(new ErrorHandler(error.message, 400));
+    }
+  });
+
+
+  // delete user for admin
+
+  export const deleteUser = catchAsyncErrors(async (req: Request, res: Response, next: NextFunction) => {
+    try{
+        const {id} = req.params
+
+        const user = await userModel.findById(id)
+        if(!user){
+            return next(new ErrorHandler("User not found",404))
+        }
+        await user.deleteOne({id});
+
+        await redis.del(id)
+
+        res.status(200).json({
+            success:true,
+            message:"User deleted successfully"
+        })
+    }catch (error: any) {
+            return next(new ErrorHandler(error.message, 400));
+
     }
   })
